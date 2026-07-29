@@ -2,6 +2,7 @@ package com.example.finalproject.model;
 
 import java.time.LocalDateTime;
 
+import com.example.finalproject.model.enums.PaymentMethod;
 import com.example.finalproject.model.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
@@ -13,36 +14,23 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Payment {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private int bookingId;
-	
-	private int amount;
-	
+
+	private int userId;
+
 	private String paymentType;
-	
+
     @Enumerated(EnumType.STRING)
 	private PaymentStatus status;
-	
-	private LocalDateTime paymentDate;
 
-	public Payment(int id, int bookingId, int amount, String paymentType, PaymentStatus status,
-			LocalDateTime paymentDate) {
-		super();
-		this.id = id;
-		this.bookingId = bookingId;
-		this.amount = amount;
-		this.paymentType = paymentType;
-		this.status = status;
-		this.paymentDate = paymentDate;
-	}
+	@Enumerated(EnumType.STRING)
+	private PaymentMethod paymentMethod;
 
-	public Payment() {
-		super();
-	}
 
 	public int getId() {
 		return id;
@@ -60,14 +48,14 @@ public class Payment {
 		this.bookingId = bookingId;
 	}
 
-	public int getAmount() {
-		return amount;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
-
+	
 	public String getPaymentType() {
 		return paymentType;
 	}
@@ -84,22 +72,11 @@ public class Payment {
 		this.status = status;
 	}
 
-	public LocalDateTime getPaymentDate() {
-		return paymentDate;
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
 	}
 
-	public void setPaymentDate(LocalDateTime paymentDate) {
-		this.paymentDate = paymentDate;
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
-
-	@Override
-	public String toString() {
-		return "Payment [id=" + id + ", bookingId=" + bookingId + ", amount=" + amount + ", paymentType=" + paymentType
-				+ ", status=" + status + ", paymentDate=" + paymentDate + "]";
-	}
-	
-	
-	
-	
-
 }

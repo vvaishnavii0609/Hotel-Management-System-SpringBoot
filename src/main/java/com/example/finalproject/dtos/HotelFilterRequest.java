@@ -1,36 +1,45 @@
 package com.example.finalproject.dtos;
 
-import java.time.LocalDate;
-
 public class HotelFilterRequest {
-	
-private String city;
 
+    private Double minRating;
 
-private Double rating;
+    private String sortBy;
 
+    private String sortDirection;
 
+    public HotelFilterRequest() {
+    }
 
+    public HotelFilterRequest(Double minRating,
+                              String sortBy,
+                              String sortDirection) {
+        this.minRating = minRating;
+        this.sortBy = sortBy;
+        this.sortDirection = sortDirection;
+    }
 
+    public Double getMinRating() {
+        return minRating;
+    }
 
-public String getCity() {
-    return city;
-}
+    public void setMinRating(Double minRating) {
+        this.minRating = minRating;
+    }
 
+    public String getSortBy() {
+        return sortBy;
+    }
 
-public void setCity(String city) {
-    this.city = city;
-}
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
 
+    public String getSortDirection() {
+        return sortDirection;
+    }
 
-public Double getRating() {
-    return rating;
-}
-
-
-public void setRating(Double rating) {
-    this.rating = rating;
-}
-
-
+    public void setSortDirection(String sortDirection) {
+        this.sortDirection = sortDirection;
+    }
 }

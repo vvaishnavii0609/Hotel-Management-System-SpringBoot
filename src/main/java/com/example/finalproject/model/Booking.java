@@ -1,5 +1,6 @@
 package com.example.finalproject.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.example.finalproject.model.enums.BookingStatus;
@@ -13,25 +14,46 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Booking {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	private int userId;
-	
-	private int roomId;
-	
-	private LocalDateTime bookingDate;
-	
-	private LocalDateTime checkinDate;
 
-	private LocalDateTime checkOutDate;
-	
+	private int userId;
+
+	private int roomId;
+
+
+	private int hotelId;
+
+	private int numberOfGuests;
+
+	private LocalDateTime bookingDate;
+
+	private LocalDate checkinDate;
+
+	private LocalDate checkOutDate;
+
 	private double totalAmount;
-	
-    @Enumerated(EnumType.STRING)
+
+	@Enumerated(EnumType.STRING)
 	private BookingStatus status;
+
+	public int getHotelId() {
+		return hotelId;
+	}
+
+	public void setHotelId(int hotelid) {
+		this.hotelId = hotelid;
+	}
+
+	public int getNumberOfGuests() {
+		return numberOfGuests;
+	}
+
+	public void setNumberOfGuests(int numberOfGuests) {
+		this.numberOfGuests = numberOfGuests;
+	}
 
 	public int getId() {
 		return id;
@@ -65,19 +87,19 @@ public class Booking {
 		this.bookingDate = bookingDate;
 	}
 
-	public LocalDateTime getCheckinDate() {
+	public LocalDate getCheckinDate() {
 		return checkinDate;
 	}
 
-	public void setCheckinDate(LocalDateTime checkinDate) {
+	public void setCheckinDate(LocalDate checkinDate) {
 		this.checkinDate = checkinDate;
 	}
 
-	public LocalDateTime getCheckOutDate() {
+	public LocalDate getCheckOutDate() {
 		return checkOutDate;
 	}
 
-	public void setCheckOutDate(LocalDateTime checkOutDate) {
+	public void setCheckOutDate(LocalDate checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 
@@ -97,17 +119,19 @@ public class Booking {
 		this.status = status;
 	}
 
-	public Booking(int id, int userId, int roomId, LocalDateTime bookingDate, LocalDateTime checkinDate,
-			LocalDateTime checkOutDate, double totalAmount, BookingStatus status) {
+	public Booking(int id, int userId, int roomId, int hotelId,LocalDateTime bookingDate, LocalDate checkinDate,
+	               LocalDate checkOutDate, double totalAmount, BookingStatus status , int numberOfGuests ) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.roomId = roomId;
+		this.hotelId=hotelId;
 		this.bookingDate = bookingDate;
 		this.checkinDate = checkinDate;
 		this.checkOutDate = checkOutDate;
 		this.totalAmount = totalAmount;
 		this.status = status;
+		this.numberOfGuests= numberOfGuests;
 	}
 
 	public Booking() {
@@ -120,10 +144,10 @@ public class Booking {
 				+ ", checkinDate=" + checkinDate + ", checkOutDate=" + checkOutDate + ", totalAmount=" + totalAmount
 				+ ", status=" + status + "]";
 	}
-	
-	
 
-	
-	
+
+
+
+
 
 }

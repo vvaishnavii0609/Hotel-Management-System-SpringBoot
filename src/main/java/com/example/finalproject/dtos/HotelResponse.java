@@ -15,6 +15,14 @@ public class HotelResponse {
 	private int totalrooms;
 	private int availablerooms;
 
+	public int getAvailablerooms() {
+		return availablerooms;
+	}
+
+	public void setAvailablerooms(int availablerooms) {
+		this.availablerooms = availablerooms;
+	}
+
 	public HotelResponse(int id, String name, String city, String description, double rating, int totalrooms, int availablerooms) {
 		super();
 		this.id = id;

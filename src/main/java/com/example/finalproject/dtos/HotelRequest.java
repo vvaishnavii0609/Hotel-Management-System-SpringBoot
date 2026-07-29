@@ -8,16 +8,16 @@ public class HotelRequest {
 	
 	private String description;
 	
-	private double rating;
+	private Double rating;
 	
-	private int totalrooms;
+	private Integer totalrooms;
 	
 
-	public int getTotalrooms() {
+	public Integer getTotalrooms() {
 		return totalrooms;
 	}
 
-	public void setTotalrooms(int totalrooms) {
+	public void setTotalrooms(Integer totalrooms) {
 		this.totalrooms = totalrooms;
 	}
 
@@ -45,11 +45,11 @@ public class HotelRequest {
 		this.description = description;
 	}
 
-	public double getRating() {
+	public Double getRating() {
 		return rating;
 	}
 
-	public void setRating(double rating) {
+	public void setRating(Double rating) {
 		this.rating = rating;
 	}
 
@@ -59,14 +59,14 @@ public class HotelRequest {
 				+ "]";
 	}
 
-	public HotelRequest(String name, String city, String description, double rating, int totalRooms) {
-		super();
-		this.name = name;
-		this.city = city;
-		this.description = description;
-		this.rating = rating;
-		this.totalrooms=totalRooms;
-	}
+//	public HotelRequest(String name, String city, String description, double rating, int totalRooms) {
+//		super();
+//		this.name = name;
+//		this.city = city;
+//		this.description = description;
+//		this.rating = rating;
+//		this.totalrooms=totalRooms;
+//	}
 
 	public HotelRequest() {
 		super();

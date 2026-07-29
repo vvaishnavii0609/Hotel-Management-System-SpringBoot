@@ -1,7 +1,10 @@
 package com.example.finalproject.service_impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import com.example.finalproject.dtos.HotelSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,7 @@ public class HotelServiceImpl implements HotelService {
 	HotelRepo repo;
 	
 	@Override
-	public Hotel addHotel(HotelRequest request) {
+	public HotelResponse addHotel(HotelRequest request) {
 		// TODO Auto-generated method stub
 		
 		Hotel hotel = new Hotel();
@@ -33,24 +36,30 @@ public class HotelServiceImpl implements HotelService {
         hotel.setAvailableRooms(request.getTotalrooms());
         
       Hotel hotel2 = repo.save(hotel);
-     return hotel2;
+     return mapToResponse(hotel2);
        
 	}
 
 	@Override
-	public List<Hotel> getAllHotels() {
+	public List<HotelResponse> getAllHotels() {
 		// TODO Auto-generated method stub
-		return repo.findAll();
+		List<Hotel> hotels = repo.findAll();
+
+		return hotels.stream()
+				.map(this::mapToResponse)
+				.toList();
+
 	}
 
 	@Override
-	public Hotel getHotelById(int id) {
+	public HotelResponse getHotelById(int id) {
 		// TODO Auto-generated method stub
-		return repo.findById(id).get();
+	Hotel hotel =	repo.findById(id).get();
+	return mapToResponse(hotel);
 	}
 
 	@Override
-	public Hotel updateHotel(int id, HotelRequest request) {
+	public HotelResponse updateHotel(int id, HotelRequest request) {
 		Hotel hotel = repo.findById(id).get();
 		
 	    hotel.setName(request.getName());
@@ -60,7 +69,8 @@ public class HotelServiceImpl implements HotelService {
 	    hotel.setTotalrooms(request.getTotalrooms());
 
 
-	    return repo.save(hotel);
+	    Hotel updatedhotel= repo.save(hotel);
+		return mapToResponse(updatedhotel);
 	}
 
 	@Override
@@ -71,43 +81,97 @@ public class HotelServiceImpl implements HotelService {
 		
 	}
 
+	@Override
+	public List<HotelResponse> searchHotels(HotelSearchRequest request) {
+		if (request.getCity() == null || request.getCity().isBlank()) {
+			throw new RuntimeException("City is required.");
+		}
+
+		if (request.getCheckInDate() == null ||
+				request.getCheckOutDate() == null) {
+			throw new RuntimeException("Check-in and Check-out dates are required.");
+		}
+
+		if (request.getCheckInDate().isAfter(request.getCheckOutDate())) {
+			throw new RuntimeException("Check-out date must be after Check-in date.");
+		}
+
+		if (request.getGuests() <= 0) {
+			throw new RuntimeException("Guests must be greater than zero.");
+		}
+
+		List<Hotel> hotels = repo.searchHotelsByCity(request.getCity());
+
+		return hotels.stream()
+				.map(this::mapToResponse)
+				.toList();
+	}
+
 
 	@Override
-	public List<Hotel> filterHotels(
-	        HotelFilterRequest request) {
+	public List<HotelResponse> filterHotels(
+			HotelFilterRequest request) {
 
+		List<Hotel> hotels =
+				repo.filterHotels(
+						request.getMinRating());
 
-	    List<Hotel> hotels = repo.findAll();
+		if(request.getSortBy()!=null) {
 
+			switch(request.getSortBy().toLowerCase()) {
 
-	    if(request.getCity() != null
-	            && !request.getCity().isEmpty()) {
+				case "rating":
 
+					hotels.sort(
+							Comparator.comparing(
+									Hotel::getRating));
 
-	        hotels = hotels.stream()
-	                .filter(hotel ->
-	                    hotel.getCity()
-	                    .equalsIgnoreCase(request.getCity())
-	                )
-	                .toList();
+					break;
 
-	    }
+				case "name":
 
+					hotels.sort(
+							Comparator.comparing(
+									Hotel::getName));
 
-	    if(request.getRating() != null) {
+					break;
+			}
 
+		}
 
-	        hotels = hotels.stream()
-	                .filter(hotel ->
-	                    hotel.getRating() >= request.getRating()
-	                )
-	                .toList();
+		if(request.getSortDirection()!=null &&
+				request.getSortDirection()
+						.equalsIgnoreCase("desc")) {
 
-	    }
+			Collections.reverse(hotels);
 
+		}
 
-	    return hotels;
+		return hotels.stream()
 
+				.map(this::mapToResponse)
+
+				.toList();
+	}
+	public HotelResponse mapToResponse(Hotel hotel) {
+
+		HotelResponse response = new HotelResponse();
+
+		response.setId(hotel.getId());
+
+		response.setName(hotel.getName());
+
+		response.setCity(hotel.getCity());
+
+		response.setDescription(hotel.getDescription());
+
+		response.setRating(hotel.getRating());
+
+		response.setTotalrooms(hotel.getTotalrooms());
+
+		response.setAvailableRooms(hotel.getAvailableRooms());
+
+		return response;
 	}
 
 

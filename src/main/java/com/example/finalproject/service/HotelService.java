@@ -5,23 +5,24 @@ import java.util.List;
 import com.example.finalproject.dtos.HotelFilterRequest;
 import com.example.finalproject.dtos.HotelRequest;
 import com.example.finalproject.dtos.HotelResponse;
+import com.example.finalproject.dtos.HotelSearchRequest;
 import com.example.finalproject.model.Hotel;
 
 public interface HotelService {
-	
-	Hotel addHotel(HotelRequest request);
 
-	List<Hotel> getAllHotels();
+	HotelResponse addHotel(HotelRequest request);
 
-	Hotel getHotelById(int id);
+	List<HotelResponse> getAllHotels();
 
-	Hotel updateHotel(int id, HotelRequest request);
+	HotelResponse getHotelById(int id);
+
+	HotelResponse updateHotel(int id, HotelRequest request);
 
 	void deleteHotel(int id);
 
-    List<Hotel> filterHotels(
-            HotelFilterRequest request
-    );
+	List<HotelResponse> searchHotels(HotelSearchRequest request);
+
+	List<HotelResponse> filterHotels(HotelFilterRequest request);
 
 
 }

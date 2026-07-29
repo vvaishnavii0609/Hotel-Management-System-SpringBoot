@@ -21,15 +21,19 @@ public class Room {
 	private String roomno;
 	
     @Enumerated(EnumType.STRING)
-
 	private RoomType roomtype;
 	
-	private int price;
+	private double price;
 	
 	private int capacity;
 	
     @Enumerated(EnumType.STRING)
 	private RoomStatus status;
+
+//	private String bedType;
+//
+//	private  String amenities;
+
 
 	public int getId() {
 		return id;
@@ -63,11 +67,11 @@ public class Room {
 		this.roomtype = roomtype;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -102,12 +106,26 @@ public class Room {
 		this.price = price;
 		this.capacity = capacity;
 		this.status = status;
+
 	}
 
 	public Room() {
 		super();
 	}
-	
-	
-
+//
+//	public String getBedType() {
+//		return bedType;
+//	}
+//
+//	public void setBedType(String bedType) {
+//		this.bedType = bedType;
+//	}
+//
+//	public String getAmenities() {
+//		return amenities;
+//	}
+//
+//	public void setAmenities(String amenities) {
+//		this.amenities = amenities;
+//	}
 }
