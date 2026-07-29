@@ -1,0 +1,55 @@
+package com.example.finalproject.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+import com.example.finalproject.dtos.LoginRequest;
+import com.example.finalproject.dtos.LoginResponse;
+import com.example.finalproject.jwt.JwtUtils;
+import com.example.finalproject.model.User;
+import com.example.finalproject.repository.UserRepo;
+import com.example.finalproject.service.UserService;
+
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+	
+	@Autowired
+	UserRepo ur;
+	
+	@Autowired
+	UserService userService;
+	
+	
+    @PostMapping("/signup")
+    public User signup(@ModelAttribute User newUser) {
+    	
+    	return this.userService.insertUser(newUser);
+    	
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@ModelAttribute LoginRequest loginRequest)
+    {
+    	User foundUser = this.ur.findByEmail(loginRequest.getEmail());
+    	if(foundUser!=null && foundUser.getPassword().equals(loginRequest.getPassword()))
+    	{
+    		//Generate Token and return it 
+    		String token = JwtUtils.generateToken(foundUser.getId(),foundUser.getName());
+    		
+    		LoginResponse response  = new LoginResponse(token);
+    		
+    		return ResponseEntity.ok(response);
+    		
+    	}
+    	
+    	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+}
