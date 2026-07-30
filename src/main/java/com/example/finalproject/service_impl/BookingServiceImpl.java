@@ -2,6 +2,10 @@ package com.example.finalproject.service_impl;
 
 import com.example.finalproject.dtos.BookingRequest;
 import com.example.finalproject.dtos.BookingResponse;
+import com.example.finalproject.exception.AuthenticationException;
+import com.example.finalproject.exception.InvalidBookingException;
+import com.example.finalproject.exception.ResourceNotFoundException;
+import com.example.finalproject.exception.RoomUnavailableException;
 import com.example.finalproject.model.Booking;
 import com.example.finalproject.model.Hotel;
 import com.example.finalproject.model.Room;
@@ -38,19 +42,19 @@ public class BookingServiceImpl implements BookingService {
         Room room = roomRepo.findById(request.getRoomId()) .orElseThrow(() -> new RuntimeException("Room not found"));
         if(room.getStatus()== RoomStatus.MAINTENANCE)
         {
-            throw new RuntimeException("Room is under maintenance");
+        	throw new RoomUnavailableException("Room is under maintenance");
         }
         if(!request.getCheckInDate().isBefore(request.getCheckOutDate()))
         {
-            throw new RuntimeException("Check-in date must be before check-out date");
+        	throw new InvalidBookingException("Check-in date must be before check-out date");
         }
         if(request.getCheckInDate().isBefore(LocalDate.now()))
         {
-            throw new RuntimeException("Check-in date cannot be in the past");
+        	throw new InvalidBookingException("Check-in date cannot be in the past");
         }
         if(request.getNumberOfGuests()>room.getCapacity())
         {
-            throw new RuntimeException("Number of guests exceeds room capacity");
+        	throw new InvalidBookingException("Number of guests exceeds room capacity");
         }
         long count = bookingRepo.countOverlappingBookings(
                 room.getId(),
@@ -59,7 +63,7 @@ public class BookingServiceImpl implements BookingService {
 
         if(count>0)
         {
-            throw new RuntimeException("Room is already booked for the selected dates");
+        	throw new RoomUnavailableException("Room is already booked for the selected dates");
         }
         long numberOfNights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
 
@@ -76,15 +80,11 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotalAmount(totalAmount);
         booking.setStatus(BookingStatus.CONFIRMED);
 
-        System.out.println("Room ID = " + room.getId());
-        System.out.println("Room Hotel ID = " + room.getHotelId());
-
-        System.out.println("Booking Hotel ID = " + booking.getHotelId());
-        System.out.println("Booking User ID = " + booking.getUserId());
 
         Booking savedBooking = bookingRepo.save(booking);
         Hotel hotel = hotelRepo.findById(room.getHotelId())
-                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Hotel not found"));
 
         return mapToResponse(savedBooking,room,hotel);
     }
@@ -98,10 +98,12 @@ public class BookingServiceImpl implements BookingService {
         for (Booking booking : bookings) {
 
             Room room = roomRepo.findById(booking.getRoomId())
-                    .orElseThrow(() -> new RuntimeException("Room not found"));
+            		.orElseThrow(() ->
+                    new ResourceNotFoundException("Room not found"));
 
             Hotel hotel = hotelRepo.findById(booking.getHotelId())
-                    .orElseThrow(() -> new RuntimeException("Hotel not found"));
+            		.orElseThrow(() ->
+                    new ResourceNotFoundException("Hotel not found"));
 
             responses.add(mapToResponse(booking, room, hotel));
         }
@@ -112,17 +114,20 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse getBookingById(int bookingId, Integer id) {
         Booking booking = bookingRepo.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Booking not found"));
 
         if (booking.getUserId()!= id) {
-            throw new RuntimeException("You are not authorized to view this booking");
+        	throw new AuthenticationException("You are not authorized to view this booking");
         }
 
         Room room = roomRepo.findById(booking.getRoomId())
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Room not found"));
 
         Hotel hotel = hotelRepo.findById(booking.getHotelId())
-                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Hotel not found"));
 
         return mapToResponse(booking, room, hotel);
     }
@@ -130,14 +135,15 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponse cancelBooking(int bookingId, Integer id) {
         Booking booking = bookingRepo.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Booking not found"));
 
         if (booking.getUserId()!=id) {
-            throw new RuntimeException("You are not authorized to cancel this booking");
+        	throw new AuthenticationException("You are not authorized to view this booking");
         }
 
         if (booking.getStatus() == BookingStatus.CANCELLED) {
-            throw new RuntimeException("Booking is already cancelled");
+        	throw new InvalidBookingException("Booking is already cancelled");
         }
 
         booking.setStatus(BookingStatus.CANCELLED);
@@ -145,10 +151,12 @@ public class BookingServiceImpl implements BookingService {
         Booking updatedBooking = bookingRepo.save(booking);
 
         Room room = roomRepo.findById(updatedBooking.getRoomId())
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Room not found"));
 
         Hotel hotel = hotelRepo.findById(updatedBooking.getHotelId())
-                .orElseThrow(() -> new RuntimeException("Hotel not found"));
+        		.orElseThrow(() ->
+                new ResourceNotFoundException("Hotel not found"));
 
         return mapToResponse(updatedBooking, room, hotel);
     }

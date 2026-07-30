@@ -20,15 +20,15 @@ public class Hotel {
 	
 	private int totalrooms;
 	
-	private int availableRooms;
+//	private int availableRooms;
 
-	public int getAvailableRooms() {
-		return availableRooms;
-	}
-
-	public void setAvailableRooms(int availableRooms) {
-		this.availableRooms = availableRooms;
-	}
+//	public int getAvailableRooms() {
+//		return availableRooms;
+//	}
+//
+//	public void setAvailableRooms(int availableRooms) {
+//		this.availableRooms = availableRooms;
+//	}
 
 	public int getId() {
 		return id;
@@ -78,7 +78,7 @@ public class Hotel {
 		this.totalrooms = totalrooms;
 	}
 
-	public Hotel(int id, String name, String city, String description, double rating, int totalrooms, int availableRooms) {
+	public Hotel(int id, String name, String city, String description, double rating, int totalrooms) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -86,7 +86,7 @@ public class Hotel {
 		this.description = description;
 		this.rating = rating;
 		this.totalrooms = totalrooms;
-		this.availableRooms= availableRooms;
+//		this.availableRooms= availableRooms;
 	}
 
 	public Hotel() {

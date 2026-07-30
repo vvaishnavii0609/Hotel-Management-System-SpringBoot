@@ -102,6 +102,10 @@ public class RoomServiceImpl implements RoomService {
             Integer guests,
             LocalDate checkInDate,
             LocalDate checkOutDate) {
+    	
+    	hotelRepo.findById(hotelId)
+        .orElseThrow(() ->
+                new ResourceNotFoundException("Hotel not found"));
 
         List<Room> rooms = repo.getRoomsByHotel(hotelId);
 
@@ -109,17 +113,14 @@ public class RoomServiceImpl implements RoomService {
 
         for (Room room : rooms) {
 
-            // Room should be AVAILABLE
             if (room.getStatus() != RoomStatus.AVAILABLE) {
                 continue;
             }
 
-            // If guests are provided, room capacity should be sufficient
             if (guests != null && room.getCapacity() < guests) {
                 continue;
             }
 
-            // If dates are provided, room should not already be booked
             if (checkInDate != null && checkOutDate != null) {
 
                 long count = bookingRepo.countOverlappingBookings(

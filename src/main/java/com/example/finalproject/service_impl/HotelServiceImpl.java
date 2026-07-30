@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.example.finalproject.dtos.HotelSearchRequest;
+import com.example.finalproject.exception.ResourceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,7 @@ public class HotelServiceImpl implements HotelService {
         hotel.setRating(request.getRating());
         hotel.setTotalrooms(request.getTotalrooms());
         
-        hotel.setAvailableRooms(request.getTotalrooms());
+//        hotel.setAvailableRooms(request.getTotalrooms());
         
       Hotel hotel2 = repo.save(hotel);
      return mapToResponse(hotel2);
@@ -54,13 +56,18 @@ public class HotelServiceImpl implements HotelService {
 	@Override
 	public HotelResponse getHotelById(int id) {
 		// TODO Auto-generated method stub
-	Hotel hotel =	repo.findById(id).get();
+		Hotel hotel = repo.findById(id)
+		        .orElseThrow(() ->
+		                new ResourceNotFoundException("Hotel not found"));
+
 	return mapToResponse(hotel);
 	}
 
 	@Override
 	public HotelResponse updateHotel(int id, HotelRequest request) {
-		Hotel hotel = repo.findById(id).get();
+		Hotel hotel = repo.findById(id)
+		        .orElseThrow(() ->
+		                new ResourceNotFoundException("Hotel not found"));
 		
 	    hotel.setName(request.getName());
 	    hotel.setCity(request.getCity());
@@ -76,7 +83,9 @@ public class HotelServiceImpl implements HotelService {
 	@Override
 	public void deleteHotel(int id) {
 		// TODO Auto-generated method stub
-		
+		Hotel hotel = repo.findById(id)
+		        .orElseThrow(() ->
+		                new ResourceNotFoundException("Hotel not found"));
 		repo.deleteById(id);
 		
 	}
@@ -169,7 +178,7 @@ public class HotelServiceImpl implements HotelService {
 
 		response.setTotalrooms(hotel.getTotalrooms());
 
-		response.setAvailableRooms(hotel.getAvailableRooms());
+//		response.setAvailableRooms(hotel.getAvailableRooms());
 
 		return response;
 	}

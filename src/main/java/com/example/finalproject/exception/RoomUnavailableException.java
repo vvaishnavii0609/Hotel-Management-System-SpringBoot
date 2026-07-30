@@ -1,5 +1,9 @@
 package com.example.finalproject.exception;
 
-public class RoomUnavailableException {
+public class RoomUnavailableException extends RuntimeException {
+
+    public RoomUnavailableException(String message) {
+        super(message);
+    }
 
 }

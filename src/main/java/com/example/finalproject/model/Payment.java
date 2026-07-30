@@ -30,7 +30,17 @@ public class Payment {
 
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod paymentMethod;
+	
+	private Double amount;
 
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
 	public int getId() {
 		return id;
