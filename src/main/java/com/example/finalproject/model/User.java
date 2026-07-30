@@ -22,14 +22,12 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	
-	private String phonenoString;
-	public User(int id, String name, String email, String password, String phonenoString) {
+	public User(int id, String name, String email, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.phonenoString = phonenoString;
 	}
 	public int getId() {
 		return id;
@@ -55,19 +53,12 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getPhonenoString() {
-		return phonenoString;
-	}
-	public void setPhonenoString(String phonenoString) {
-		this.phonenoString = phonenoString;
-	}
 	public User() {
 		super();
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", phonenoString="
-				+ phonenoString + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
 	}
 	
 	

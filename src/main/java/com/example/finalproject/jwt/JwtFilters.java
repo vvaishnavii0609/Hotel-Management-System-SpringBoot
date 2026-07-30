@@ -20,7 +20,14 @@ public class JwtFilters implements Filter {
 		// TODO Auto-generated method stub
 		
 		HttpServletRequest req = (HttpServletRequest) request;
-		
+		HttpServletResponse res = (HttpServletResponse) response;
+
+		// Allow CORS preflight requests
+		if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+			res.setStatus(HttpServletResponse.SC_OK);
+			chain.doFilter(request, response);
+			return;
+		}
 	
 		String authHeader = req.getHeader("Authorization");
 		
@@ -36,7 +43,6 @@ public class JwtFilters implements Filter {
 		
 		if(authHeader == null || !authHeader.startsWith("Bearer "))
 		{
-			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED ,"Missing Token");
 			return;
 		}
@@ -44,7 +50,6 @@ public class JwtFilters implements Filter {
 		String token = authHeader.substring(7);
 		if(!JwtUtils.validate(token))
 		{
-			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED ,"Invalid Token");
 			return;
 		}

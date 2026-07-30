@@ -8,6 +8,16 @@ public class HotelFilterRequest {
 
     private String sortDirection;
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    private String city;
+
     public HotelFilterRequest() {
     }
 

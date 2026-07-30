@@ -21,11 +21,11 @@ public interface HotelRepo extends JpaRepository<Hotel, Integer> {
  List<Hotel> searchHotelsByCity(@Param("city") String city);
 
  @Query("""
-            SELECT h
-            FROM Hotel h
-            WHERE (:minRating IS NULL
-                   OR h.rating>=:minRating)
-            """)
- List<Hotel> filterHotels(
+SELECT h
+FROM Hotel h
+WHERE LOWER(h.city) = LOWER(:city)
+AND h.rating >= :minRating
+""")
+ List<Hotel> filterHotels(@Param("city") String city,
          @Param("minRating") Double minRating);
 }

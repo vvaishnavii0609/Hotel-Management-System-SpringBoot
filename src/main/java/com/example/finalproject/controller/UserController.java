@@ -3,10 +3,7 @@ package com.example.finalproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.example.finalproject.dtos.LoginRequest;
@@ -19,6 +16,10 @@ import com.example.finalproject.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+//@CrossOrigin(origins = {
+//		"http://127.0.0.1:5500",
+//		"http://localhost:5500"
+//})
 public class UserController {
 	
 	@Autowired

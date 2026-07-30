@@ -123,6 +123,7 @@ public class HotelServiceImpl implements HotelService {
 
 		List<Hotel> hotels =
 				repo.filterHotels(
+						request.getCity(),
 						request.getMinRating());
 
 		if(request.getSortBy()!=null) {
