@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.example.finalproject.dtos.HotelSearchRequest;
+import com.example.finalproject.exception.AuthenticationException;
 import com.example.finalproject.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,16 @@ public class HotelServiceImpl implements HotelService {
 	HotelRepo repo;
 	
 	@Override
-	public HotelResponse addHotel(HotelRequest request) {
-		// TODO Auto-generated method stub
+	public HotelResponse addHotel(HotelRequest request, String role) {
 		
+		
+		// TODO Auto-generated method stub
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can add hotels"
+	        );
+	    }
 		Hotel hotel = new Hotel();
 		hotel.setName(request.getName());
         hotel.setCity(request.getCity());
@@ -64,7 +72,14 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public HotelResponse updateHotel(int id, HotelRequest request) {
+	public HotelResponse updateHotel(int id, HotelRequest request, String role) {
+		
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can update hotels"
+	        );
+	    }
 		Hotel hotel = repo.findById(id)
 		        .orElseThrow(() ->
 		                new ResourceNotFoundException("Hotel not found"));
@@ -81,8 +96,14 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
-	public void deleteHotel(int id) {
-		// TODO Auto-generated method stub
+	public void deleteHotel(int id, String role) {
+		
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can delete hotels"
+	        );
+	    }
 		Hotel hotel = repo.findById(id)
 		        .orElseThrow(() ->
 		                new ResourceNotFoundException("Hotel not found"));

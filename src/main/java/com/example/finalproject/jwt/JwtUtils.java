@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import com.example.finalproject.model.enums.Role;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -14,11 +16,12 @@ public class JwtUtils {
 	
 	private static final SecretKey KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 	
-	public static String generateToken(int id, String name)
+	public static String generateToken(int id, String name, Role role)
 	{
 		return Jwts.builder()
 				.claim("id", id)
 				.claim("name", name)
+				.claim("role", role.toString())
 				.issuedAt(new Date())
 				.expiration(new Date(System.currentTimeMillis()+1000*60*60))
 				.signWith(KEY)

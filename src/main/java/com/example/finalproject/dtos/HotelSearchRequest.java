@@ -10,9 +10,9 @@ public class HotelSearchRequest {
 
     private LocalDate checkOutDate;
 
-    private int guests;
+    private Integer guests;
 
-    public HotelSearchRequest(String city, LocalDate checkInDate, LocalDate checkOutDate, int guests) {
+    public HotelSearchRequest(String city, LocalDate checkInDate, LocalDate checkOutDate, Integer guests) {
         this.city = city;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -43,11 +43,11 @@ public class HotelSearchRequest {
         this.checkOutDate = checkOutDate;
     }
 
-    public int getGuests() {
+    public Integer getGuests() {
         return guests;
     }
 
-    public void setGuests(int guests) {
+    public void setGuests(Integer guests) {
         this.guests = guests;
     }
 

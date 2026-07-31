@@ -43,9 +43,9 @@ public class UserController {
     	if(foundUser!=null && foundUser.getPassword().equals(loginRequest.getPassword()))
     	{
     		//Generate Token and return it 
-    		String token = JwtUtils.generateToken(foundUser.getId(),foundUser.getName());
+    		String token = JwtUtils.generateToken(foundUser.getId(),foundUser.getName(),foundUser.getRole());
     		
-    		LoginResponse response  = new LoginResponse(token);
+    		LoginResponse response  = new LoginResponse(token,foundUser.getName(),foundUser.getRole().toString());
     		
     		return ResponseEntity.ok(response);
     		

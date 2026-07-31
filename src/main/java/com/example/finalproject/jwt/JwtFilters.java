@@ -28,18 +28,10 @@ public class JwtFilters implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+		
+		
 	
 		String authHeader = req.getHeader("Authorization");
-		
-		if(authHeader!= null &&authHeader.startsWith("Bearer "))
-		{
-			String token = authHeader.substring(7);
-			Claims claims = JwtUtils.getClaims(token);
-			
-			req.setAttribute("id", claims.get("id" , Integer.class));
-			req.setAttribute("name", claims.get("name" , String.class));
-			
-		}
 		
 		if(authHeader == null || !authHeader.startsWith("Bearer "))
 		{
@@ -47,12 +39,29 @@ public class JwtFilters implements Filter {
 			return;
 		}
 		
+		
 		String token = authHeader.substring(7);
 		if(!JwtUtils.validate(token))
 		{
 			res.sendError(HttpServletResponse.SC_UNAUTHORIZED ,"Invalid Token");
 			return;
 		}
+		
+		
+		if(authHeader!= null &&authHeader.startsWith("Bearer "))
+		{
+			 token = authHeader.substring(7);
+			Claims claims = JwtUtils.getClaims(token);
+			
+			req.setAttribute("id", claims.get("id" , Integer.class));
+			req.setAttribute("name", claims.get("name" , String.class));
+			req.setAttribute("role", claims.get("role" , String.class));
+
+			
+		}
+		
+
+
 		
 		chain.doFilter(request, response);
 	}

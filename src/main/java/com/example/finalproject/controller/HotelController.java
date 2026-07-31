@@ -22,6 +22,8 @@ import com.example.finalproject.dtos.HotelRequest;
 import com.example.finalproject.repository.HotelRepo;
 import com.example.finalproject.service.HotelService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
@@ -35,11 +37,10 @@ HotelService service;
 
     @PostMapping
     public ResponseEntity<HotelResponse> addHotel(
-            @RequestBody HotelRequest request) {
-
-        System.out.println(request);
-
-        HotelResponse hotel = service.addHotel(request);
+            @RequestBody HotelRequest request, HttpServletRequest httprequest) {
+    	
+    	String role = (String)httprequest.getAttribute("role");
+        HotelResponse hotel = service.addHotel(request,role);
 
         return new ResponseEntity<>(hotel, HttpStatus.CREATED);
     }
@@ -66,18 +67,20 @@ public ResponseEntity<HotelResponse> getHotelById(@PathVariable int id) {
 }
 
 @PutMapping("/{id}")
-public ResponseEntity<HotelResponse> updateHotel( @PathVariable int id, @RequestBody HotelRequest request) {
+public ResponseEntity<HotelResponse> updateHotel( @PathVariable int id, @RequestBody HotelRequest request, HttpServletRequest httprequest) {
 
-    HotelResponse hotel = service.updateHotel(id, request);
+	String  role = (String)httprequest.getAttribute("role"); 
+    HotelResponse hotel = service.updateHotel(id, request, role);
 
     return ResponseEntity.ok(hotel);
 }
 
 
 @DeleteMapping("/{id}")
-public ResponseEntity<String> deleteHotel(@PathVariable int id) {
+public ResponseEntity<String> deleteHotel(@PathVariable int id, HttpServletRequest httprequest) {
 
- service.deleteHotel(id);
+	String role = (String)httprequest.getAttribute("role");
+ service.deleteHotel(id,role);
 
     return ResponseEntity.ok("Hotel deleted successfully"
     );

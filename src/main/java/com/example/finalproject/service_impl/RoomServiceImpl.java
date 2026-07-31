@@ -3,6 +3,7 @@ package com.example.finalproject.service_impl;
 import com.example.finalproject.dtos.RoomFilterRequest;
 import com.example.finalproject.dtos.RoomRequest;
 import com.example.finalproject.dtos.RoomResponse;
+import com.example.finalproject.exception.AuthenticationException;
 import com.example.finalproject.exception.ResourceNotFoundException;
 import com.example.finalproject.model.Room;
 import com.example.finalproject.repository.BookingRepo;
@@ -30,7 +31,14 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public RoomResponse addRoom(RoomRequest request) {
+    public RoomResponse addRoom(RoomRequest request,String role) {
+    	
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can add rooms"
+	        );
+	    }
 
         hotelRepo.findById(request.getHotelId())
                 .orElseThrow(() ->
@@ -59,7 +67,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomResponse updateRoom(int id, RoomRequest request) {
+    public RoomResponse updateRoom(int id, RoomRequest request, String role) {
+    	
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can update room"
+	        );
+	    }
         Room room = repo.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Room not found"));
@@ -79,7 +94,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteRoom(int id) {
+    public void deleteRoom(int id, String role) {
+    	
+	    if(!role.equals("ADMIN")) {
+
+	        throw new AuthenticationException(
+	                "Only admin can add hotels"
+	        );
+	    }
         Room room = repo.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Room not found"));

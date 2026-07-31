@@ -10,15 +10,15 @@ import com.example.finalproject.model.Hotel;
 
 public interface HotelService {
 
-	HotelResponse addHotel(HotelRequest request);
+	HotelResponse addHotel(HotelRequest request, String role);
 
 	List<HotelResponse> getAllHotels();
 
 	HotelResponse getHotelById(int id);
 
-	HotelResponse updateHotel(int id, HotelRequest request);
+	HotelResponse updateHotel(int id, HotelRequest request, String role);
 
-	void deleteHotel(int id);
+	void deleteHotel(int id, String role);
 
 	List<HotelResponse> searchHotels(HotelSearchRequest request);
 

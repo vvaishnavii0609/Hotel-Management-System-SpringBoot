@@ -4,6 +4,9 @@ import com.example.finalproject.dtos.RoomFilterRequest;
 import com.example.finalproject.dtos.RoomRequest;
 import com.example.finalproject.dtos.RoomResponse;
 import com.example.finalproject.service.RoomService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +24,11 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<RoomResponse> addRoom(
-            @RequestBody RoomRequest request) {
+            @RequestBody RoomRequest request, HttpServletRequest httprequest) {
+    	
+    	String role = (String) httprequest.getAttribute("role");
 
-        RoomResponse response = service.addRoom(request);
+        RoomResponse response = service.addRoom(request, role);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -37,17 +42,21 @@ public class RoomController {
     @PutMapping("/{id}")
     public ResponseEntity<RoomResponse> updateRoom(
             @PathVariable int id,
-            @RequestBody RoomRequest request) {
+            @RequestBody RoomRequest request , HttpServletRequest httprequest) {
+    	
+    	String role = (String) httprequest.getAttribute("role");
 
         return ResponseEntity.ok(
-                service.updateRoom(id, request));
+                service.updateRoom(id, request,role));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteRoom(
-            @PathVariable int id) {
+            @PathVariable int id, HttpServletRequest httprequest) {
+    	
+    	String role = (String) httprequest.getAttribute("role");
 
-        service.deleteRoom(id);
+        service.deleteRoom(id,role);
 
         return ResponseEntity.ok("Room deleted successfully");
     }
