@@ -106,6 +106,14 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Room not found"));
 
+        if (bookingRepo.existsByRoomId(id)) {
+
+            throw new RuntimeException(
+                    "Cannot delete room because bookings already exist."
+            );
+
+        }
+
         repo.delete(room);
 
     }

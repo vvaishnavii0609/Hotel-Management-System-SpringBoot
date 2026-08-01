@@ -8,6 +8,7 @@ import com.example.finalproject.dtos.HotelSearchRequest;
 import com.example.finalproject.exception.AuthenticationException;
 import com.example.finalproject.exception.ResourceNotFoundException;
 
+import com.example.finalproject.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,11 @@ import com.example.finalproject.service.HotelService;
 @Service
 public class HotelServiceImpl implements HotelService {
 
-	
 	@Autowired
 	HotelRepo repo;
+
+	@Autowired
+	RoomRepo roomRepo;
 	
 	@Override
 	public HotelResponse addHotel(HotelRequest request, String role) {
@@ -41,8 +44,7 @@ public class HotelServiceImpl implements HotelService {
         hotel.setCity(request.getCity());
         hotel.setDescription(request.getDescription());
         hotel.setRating(request.getRating());
-        hotel.setTotalrooms(request.getTotalrooms());
-        
+
 //        hotel.setAvailableRooms(request.getTotalrooms());
         
       Hotel hotel2 = repo.save(hotel);
@@ -88,8 +90,6 @@ public class HotelServiceImpl implements HotelService {
 	    hotel.setCity(request.getCity());
 	    hotel.setDescription(request.getDescription());
 	    hotel.setRating(request.getRating());
-	    hotel.setTotalrooms(request.getTotalrooms());
-
 
 	    Hotel updatedhotel= repo.save(hotel);
 		return mapToResponse(updatedhotel);
@@ -107,6 +107,14 @@ public class HotelServiceImpl implements HotelService {
 		Hotel hotel = repo.findById(id)
 		        .orElseThrow(() ->
 		                new ResourceNotFoundException("Hotel not found"));
+
+		if (roomRepo.existsByHotelId(id)) {
+
+			throw new RuntimeException(
+					"Cannot delete hotel because rooms already exist."
+			);
+
+		}
 		repo.deleteById(id);
 		
 	}
@@ -197,8 +205,6 @@ public class HotelServiceImpl implements HotelService {
 		response.setDescription(hotel.getDescription());
 
 		response.setRating(hotel.getRating());
-
-		response.setTotalrooms(hotel.getTotalrooms());
 
 //		response.setAvailableRooms(hotel.getAvailableRooms());
 

@@ -10,16 +10,16 @@ public class HotelRequest {
 	
 	private Double rating;
 	
-	private Integer totalrooms;
+	//private Integer totalrooms;
 	
 
-	public Integer getTotalrooms() {
-		return totalrooms;
-	}
-
-	public void setTotalrooms(Integer totalrooms) {
-		this.totalrooms = totalrooms;
-	}
+//	public Integer getTotalrooms() {
+//		return totalrooms;
+//	}
+//
+//	public void setTotalrooms(Integer totalrooms) {
+//		this.totalrooms = totalrooms;
+//	}
 
 	public String getName() {
 		return name;

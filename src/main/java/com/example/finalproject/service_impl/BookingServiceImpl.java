@@ -97,6 +97,12 @@ public class BookingServiceImpl implements BookingService {
 
         for (Booking booking : bookings) {
 
+            System.out.println("---------------------");
+            System.out.println("Booking ID : " + booking.getId());
+            System.out.println("User ID    : " + booking.getUserId());
+            System.out.println("Room ID    : " + booking.getRoomId());
+
+
             Room room = roomRepo.findById(booking.getRoomId())
             		.orElseThrow(() ->
                     new ResourceNotFoundException("Room not found"));

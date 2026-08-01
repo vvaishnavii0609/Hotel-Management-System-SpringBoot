@@ -28,5 +28,6 @@ public interface BookingRepo extends JpaRepository<Booking, Integer>  {
                 @Param("checkInDate") LocalDate checkInDate,
                 @Param("checkOutDate") LocalDate checkOutDate);
 
+    boolean existsByRoomId(int roomId);
 
 }

@@ -34,4 +34,6 @@ public interface RoomRepo extends JpaRepository<Room, Integer> {
             @Param("capacity") Integer capacity,
             @Param("maxPrice") Double maxPrice
     );
+
+    boolean existsByHotelId(int hotelId);
 }

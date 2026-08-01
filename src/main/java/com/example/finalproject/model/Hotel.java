@@ -18,7 +18,7 @@ public class Hotel {
 	
 	private double rating;
 	
-	private int totalrooms;
+//	private int totalrooms;
 
 
 	public int getId() {
@@ -61,22 +61,22 @@ public class Hotel {
 		this.rating = rating;
 	}
 
-	public int getTotalrooms() {
-		return totalrooms;
-	}
+//	public int getTotalrooms() {
+//		return totalrooms;
+//	}
 
-	public void setTotalrooms(int totalrooms) {
-		this.totalrooms = totalrooms;
-	}
+//	public void setTotalrooms(int totalrooms) {
+//		this.totalrooms = totalrooms;
+//	}
 
-	public Hotel(int id, String name, String city, String description, double rating, int totalrooms) {
+	public Hotel(int id, String name, String city, String description, double rating) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.city = city;
 		this.description = description;
 		this.rating = rating;
-		this.totalrooms = totalrooms;
+//		this.totalrooms = totalrooms;
 //		this.availableRooms= availableRooms;
 	}
 
@@ -87,7 +87,7 @@ public class Hotel {
 	@Override
 	public String toString() {
 		return "Hotel [id=" + id + ", name=" + name + ", city=" + city + ", description=" + description + ", rating="
-				+ rating + ", totalrooms=" + totalrooms + "]";
+				+ rating + ", totalrooms=" + "]";
 	}
 	
 	

@@ -12,25 +12,25 @@ public class HotelResponse {
 	
 	private double rating;
 	
-	private int totalrooms;
+//	private int totalrooms;
 
-	public HotelResponse(int id, String name, String city, String description, double rating, int totalrooms, int availablerooms) {
+	public HotelResponse(int id, String name, String city, String description, double rating) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.city = city;
 		this.description = description;
 		this.rating = rating;
-		this.totalrooms=totalrooms;
+//		this.totalrooms=totalrooms;
 	}
 
-	public int getTotalrooms() {
-		return totalrooms;
-	}
-
-	public void setTotalrooms(int totalrooms) {
-		this.totalrooms = totalrooms;
-	}
+//	public int getTotalrooms() {
+//		return totalrooms;
+//	}
+//
+//	public void setTotalrooms(int totalrooms) {
+//		this.totalrooms = totalrooms;
+//	}
 
 	public int getId() {
 		return id;
@@ -82,9 +82,5 @@ public class HotelResponse {
 		super();
 	}
 
-	public void setAvailableRooms(int availableRooms2) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
