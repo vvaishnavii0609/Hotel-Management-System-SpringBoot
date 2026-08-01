@@ -19,4 +19,6 @@ public interface RoomService {
     List<RoomResponse> getRoomsByHotel(int hotelId, Integer guests, LocalDate checkInDate, LocalDate checkOutDate);
 
     List<RoomResponse> filterRooms(int hotelId, RoomFilterRequest request);
+
+    RoomResponse getRoomById(int id);
 }

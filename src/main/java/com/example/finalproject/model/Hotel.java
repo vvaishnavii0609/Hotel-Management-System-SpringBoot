@@ -19,16 +19,7 @@ public class Hotel {
 	private double rating;
 	
 	private int totalrooms;
-	
-//	private int availableRooms;
 
-//	public int getAvailableRooms() {
-//		return availableRooms;
-//	}
-//
-//	public void setAvailableRooms(int availableRooms) {
-//		this.availableRooms = availableRooms;
-//	}
 
 	public int getId() {
 		return id;

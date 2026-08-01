@@ -13,15 +13,6 @@ public class HotelResponse {
 	private double rating;
 	
 	private int totalrooms;
-//	private int availablerooms;
-
-//	public int getAvailablerooms() {
-//		return availablerooms;
-//	}
-//
-//	public void setAvailablerooms(int availablerooms) {
-//		this.availablerooms = availablerooms;
-//	}
 
 	public HotelResponse(int id, String name, String city, String description, double rating, int totalrooms, int availablerooms) {
 		super();
@@ -31,7 +22,6 @@ public class HotelResponse {
 		this.description = description;
 		this.rating = rating;
 		this.totalrooms=totalrooms;
-//		this.availablerooms=availablerooms;
 	}
 
 	public int getTotalrooms() {

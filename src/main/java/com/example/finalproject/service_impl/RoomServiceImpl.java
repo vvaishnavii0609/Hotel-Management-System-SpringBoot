@@ -99,7 +99,7 @@ public class RoomServiceImpl implements RoomService {
 	    if(!role.equals("ADMIN")) {
 
 	        throw new AuthenticationException(
-	                "Only admin can add hotels"
+	                "Only admin can delete room"
 	        );
 	    }
         Room room = repo.findById(id)
@@ -173,6 +173,14 @@ public class RoomServiceImpl implements RoomService {
         return rooms.stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    @Override
+    public RoomResponse getRoomById(int id) {
+        Room room = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+
+        return mapToResponse(room);
+
     }
 
     public RoomResponse mapToResponse(Room room) {
