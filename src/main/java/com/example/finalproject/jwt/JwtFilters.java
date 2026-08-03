@@ -20,6 +20,16 @@ public class JwtFilters implements Filter {
 		// TODO Auto-generated method stub
 		
 		HttpServletRequest req = (HttpServletRequest) request;
+		String path = req.getRequestURI();
+
+		if (
+				path.equals("/hotel/search") ||
+						(req.getMethod().equals("GET") && path.startsWith("/hotel")) ||
+						(req.getMethod().equals("GET") && path.startsWith("/room"))
+		) {
+			chain.doFilter(request, response);
+			return;
+		}
 		HttpServletResponse res = (HttpServletResponse) response;
 
 		// Allow CORS preflight requests
@@ -57,18 +67,10 @@ public class JwtFilters implements Filter {
 			req.setAttribute("name", claims.get("name" , String.class));
 			req.setAttribute("role", claims.get("role" , String.class));
 
+			chain.doFilter(request, response);
 			
 		}
-		
-		
-		String path = req.getRequestURI();
 
-		if(path.equals("/user/login") ||
-		   path.equals("/user/signup")){
-
-		    chain.doFilter(request,response);
-		    return;
-		}
 
 	}
 

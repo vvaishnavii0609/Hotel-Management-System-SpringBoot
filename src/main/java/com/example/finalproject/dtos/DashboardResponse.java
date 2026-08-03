@@ -1,16 +1,45 @@
 package com.example.finalproject.dtos;
 
+import java.util.Map;
+
 public class DashboardResponse {
 
-    private long totalHotels;
-    private long totalRooms;
-    private long totalBookings;
-    private long totalPayments;
 
+        private long totalHotels;
+        private long totalRooms;
+        private long totalBookings;
+        private long totalPayments;
 
-    private double totalRevenue;
+        private double totalrevenue;
 
-    public DashboardResponse() {}
+    private Map<String, Long> hotelsByCity;
+
+    private Map<String, Long> bookingStatus;
+
+    public void setTotalrevenue(double totalrevenue) {
+        this.totalrevenue = totalrevenue;
+    }
+
+    public Map<String, Long> getHotelsByCity() {
+        return hotelsByCity;
+    }
+
+    public void setHotelsByCity(Map<String, Long> hotelsByCity) {
+        this.hotelsByCity = hotelsByCity;
+    }
+
+    public Map<String, Long> getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(Map<String, Long> bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public double getTotalrevenue() {
+        return totalrevenue;
+    }
+
 
     public long getTotalHotels() {
         return totalHotels;
@@ -44,14 +73,8 @@ public class DashboardResponse {
         this.totalPayments = totalPayments;
     }
 
+    public void setTotalRevenue(double v) {
+        this.totalrevenue = totalrevenue;
 
-
-    public double getTotalRevenue() {
-        return totalRevenue;
     }
-
-    public void setTotalRevenue(double totalRevenue) {
-        this.totalRevenue = totalRevenue;
-    }
-	
 }

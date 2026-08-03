@@ -14,13 +14,13 @@ public interface BookingService {
 
     BookingResponse cancelBooking(int bookingId, Integer id);
     
-    List<BookingResponse> getPendingBookings();
+    List<BookingResponse> getPendingBookings(String role);
 
-    BookingResponse approveBooking(int bookingId);
+    BookingResponse approveBooking(int bookingId, String role);
 
-    BookingResponse rejectBooking(int bookingId);
+    BookingResponse rejectBooking(int bookingId,String role);
     
-    List<BookingResponse> getAllBookings();
+    List<BookingResponse> getAllBookings(String role);
 
 
 }

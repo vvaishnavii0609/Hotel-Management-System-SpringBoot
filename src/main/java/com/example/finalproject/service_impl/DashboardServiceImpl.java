@@ -12,6 +12,9 @@ import com.example.finalproject.repository.PaymentRepo;
 import com.example.finalproject.repository.RoomRepo;
 import com.example.finalproject.service.DashboardService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class DashboardServiceImpl implements DashboardService{
 	
@@ -52,6 +55,22 @@ public class DashboardServiceImpl implements DashboardService{
         response.setTotalRevenue(
                 revenue == null ? 0 : revenue);
 
+        Map<String, Long> hotelsByCity = new HashMap<>();
+
+        for (Object[] row : hotelRepo.getHotelsByCity()) {
+            hotelsByCity.put((String) row[0], (Long) row[1]);
+        }
+
+        response.setHotelsByCity(hotelsByCity);
+
+
+        Map<String, Long> bookingStatus = new HashMap<>();
+
+        for (Object[] row : bookingRepo.getBookingStatusCount()) {
+            bookingStatus.put(row[0].toString(), (Long) row[1]);
+        }
+
+        response.setBookingStatus(bookingStatus);
         return response;
     }
 

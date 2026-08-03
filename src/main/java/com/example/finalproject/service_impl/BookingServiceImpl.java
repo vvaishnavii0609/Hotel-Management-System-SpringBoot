@@ -299,12 +299,14 @@ public class BookingServiceImpl implements BookingService {
         }
 
 
-
-        if(booking.getStatus()
-                == BookingStatus.CONFIRMED)
-        {
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
             throw new InvalidBookingException(
-                    "Confirmed booking cannot be cancelled");
+                    "Booking is already cancelled");
+        }
+
+        if (booking.getStatus() == BookingStatus.REJECTED) {
+            throw new InvalidBookingException(
+                    "Rejected booking cannot be cancelled");
         }
 
 
@@ -347,7 +349,7 @@ public class BookingServiceImpl implements BookingService {
 
     // ADMIN
     @Override
-    public List<BookingResponse> getPendingBookings() {
+    public List<BookingResponse> getPendingBookings(String role) {
 
 
         List<Booking> bookings =
@@ -398,7 +400,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse approveBooking(
-            int bookingId) {
+            int bookingId,String role) {
 
 
 
@@ -457,7 +459,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse rejectBooking(
-            int bookingId) {
+            int bookingId, String role) {
 
 
         Booking booking =
@@ -504,7 +506,7 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public List<BookingResponse> getAllBookings() {
+    public List<BookingResponse> getAllBookings(String role) {
 
 
         List<Booking> bookings =

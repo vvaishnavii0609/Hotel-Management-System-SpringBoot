@@ -28,4 +28,11 @@ AND h.rating >= :minRating
 """)
  List<Hotel> filterHotels(@Param("city") String city,
          @Param("minRating") Double minRating);
+
+ @Query("""
+SELECT h.city, COUNT(h)
+FROM Hotel h
+GROUP BY h.city
+""")
+ List<Object[]> getHotelsByCity();
 }

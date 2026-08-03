@@ -58,40 +58,50 @@ public class BookingController {
 
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping("/admin/pending")
-    public ResponseEntity<List<BookingResponse>> getPendingBookings(){
+    public ResponseEntity<List<BookingResponse>> getPendingBookings(
+            HttpServletRequest request) {
+
+        String role = (String) request.getAttribute("role");
 
         return ResponseEntity.ok(
-            bookingService.getPendingBookings()
+                bookingService.getPendingBookings(role)
         );
     }
 
 
     @PatchMapping("/admin/{bookingId}/approve")
     public ResponseEntity<BookingResponse> approveBooking(
-            @PathVariable int bookingId){
+            @PathVariable int bookingId,
+            HttpServletRequest request) {
+
+        String role = (String) request.getAttribute("role");
 
         return ResponseEntity.ok(
-            bookingService.approveBooking(bookingId)
+                bookingService.approveBooking(bookingId, role)
         );
     }
-
 
     @PatchMapping("/admin/{bookingId}/reject")
     public ResponseEntity<BookingResponse> rejectBooking(
-            @PathVariable int bookingId){
+            @PathVariable int bookingId,
+            HttpServletRequest request) {
+
+        String role = (String) request.getAttribute("role");
 
         return ResponseEntity.ok(
-            bookingService.rejectBooking(bookingId)
+                bookingService.rejectBooking(bookingId, role)
         );
     }
-
     @GetMapping("/admin/all")
-    public ResponseEntity<List<BookingResponse>> getAllBookings(){
+    public ResponseEntity<List<BookingResponse>> getAllBookings(
+            HttpServletRequest request) {
+
+        String role = (String) request.getAttribute("role");
 
         return ResponseEntity.ok(
-            bookingService.getAllBookings()
+                bookingService.getAllBookings(role)
         );
     }
 

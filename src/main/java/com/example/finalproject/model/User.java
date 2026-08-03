@@ -15,7 +15,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(nullable = false)
 	private String name;
@@ -30,14 +30,14 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
-	public User(int id, String name, String email, String password,Role role) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-	}
+//	public User(int id, String name, String email, String password,Role role) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.email = email;
+//		this.password = password;
+//		this.role = role;
+//	}
 	public Role getRole() {
 		return role;
 	}

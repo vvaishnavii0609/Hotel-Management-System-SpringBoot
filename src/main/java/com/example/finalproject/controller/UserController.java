@@ -30,14 +30,14 @@ public class UserController {
 	
 	
     @PostMapping("/signup")
-    public User signup(@ModelAttribute User newUser) {
+    public User signup(@RequestBody User newUser) {
     	
     	return this.userService.insertUser(newUser);
     	
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@ModelAttribute LoginRequest loginRequest)
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest)
     {
     	User foundUser = this.ur.findByEmail(loginRequest.getEmail());
     	if(foundUser!=null && foundUser.getPassword().equals(loginRequest.getPassword()))

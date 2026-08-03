@@ -20,6 +20,8 @@ public class FilterConfig {
 		bean.addUrlPatterns("/booking/*");
 		bean.addUrlPatterns("/payment/*");
 		bean.addUrlPatterns("/dashboard/*");
+		bean.addUrlPatterns("/hotel/*");
+		bean.addUrlPatterns("/room/*");
 
 		
 		
