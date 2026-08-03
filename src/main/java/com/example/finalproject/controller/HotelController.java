@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.finalproject.dtos.HotelResponse;
 import com.example.finalproject.dtos.HotelSearchRequest;
+import com.example.finalproject.exception.AuthenticationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,13 @@ HotelService service;
             @RequestBody HotelRequest request, HttpServletRequest httprequest) {
     	
     	String role = (String)httprequest.getAttribute("role");
-        HotelResponse hotel = service.addHotel(request,role);
+
+    	if(role == null){
+    	    throw new AuthenticationException("Login required");
+    	}
+
+    	HotelResponse hotel = service.addHotel(request,role);
+
 
         return new ResponseEntity<>(hotel, HttpStatus.CREATED);
     }
@@ -69,7 +77,13 @@ public ResponseEntity<HotelResponse> getHotelById(@PathVariable int id) {
 @PutMapping("/{id}")
 public ResponseEntity<HotelResponse> updateHotel( @PathVariable int id, @RequestBody HotelRequest request, HttpServletRequest httprequest) {
 
-	String  role = (String)httprequest.getAttribute("role"); 
+	String role = (String)httprequest.getAttribute("role");
+
+	if(role == null){
+	    throw new AuthenticationException("Login required");
+	}
+
+
     HotelResponse hotel = service.updateHotel(id, request, role);
 
     return ResponseEntity.ok(hotel);
@@ -80,6 +94,9 @@ public ResponseEntity<HotelResponse> updateHotel( @PathVariable int id, @Request
 public ResponseEntity<String> deleteHotel(@PathVariable int id, HttpServletRequest httprequest) {
 
 	String role = (String)httprequest.getAttribute("role");
+	if(role == null){
+	    throw new AuthenticationException("Login required");
+	}
  service.deleteHotel(id,role);
 
     return ResponseEntity.ok("Hotel deleted successfully"

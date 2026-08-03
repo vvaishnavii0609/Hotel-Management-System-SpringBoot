@@ -10,6 +10,9 @@ public class HotelRequest {
 	
 	private Double rating;
 	
+	private String address;
+	
+	
 	//private Integer totalrooms;
 	
 
@@ -20,6 +23,14 @@ public class HotelRequest {
 //	public void setTotalrooms(Integer totalrooms) {
 //		this.totalrooms = totalrooms;
 //	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public String getName() {
 		return name;

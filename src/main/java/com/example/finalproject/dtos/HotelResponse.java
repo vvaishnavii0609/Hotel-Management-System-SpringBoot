@@ -12,7 +12,18 @@ public class HotelResponse {
 	
 	private double rating;
 	
+	private String address;
+
+	
 //	private int totalrooms;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public HotelResponse(int id, String name, String city, String description, double rating) {
 		super();

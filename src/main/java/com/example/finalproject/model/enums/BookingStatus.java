@@ -3,9 +3,14 @@ package com.example.finalproject.model.enums;
 
 public enum BookingStatus {
 
+    PAYMENT_PENDING,
+
+    PAID,
+
     CONFIRMED,
-    CHECKED_IN,
-    CHECKED_OUT,
+
+    REJECTED,
+
     CANCELLED
 
 }

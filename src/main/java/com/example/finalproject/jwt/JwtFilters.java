@@ -60,10 +60,16 @@ public class JwtFilters implements Filter {
 			
 		}
 		
-
-
 		
-		chain.doFilter(request, response);
+		String path = req.getRequestURI();
+
+		if(path.equals("/user/login") ||
+		   path.equals("/user/signup")){
+
+		    chain.doFilter(request,response);
+		    return;
+		}
+
 	}
 
 }

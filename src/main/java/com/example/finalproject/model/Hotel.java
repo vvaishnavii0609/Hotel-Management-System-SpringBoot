@@ -18,8 +18,19 @@ public class Hotel {
 	
 	private double rating;
 	
+	private String address;
+
+	
 //	private int totalrooms;
 
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public int getId() {
 		return id;

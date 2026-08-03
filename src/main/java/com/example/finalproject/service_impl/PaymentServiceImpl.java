@@ -8,6 +8,7 @@ import com.example.finalproject.exception.ResourceNotFoundException;
 import com.example.finalproject.jwt.JwtUtils;
 import com.example.finalproject.model.Booking;
 import com.example.finalproject.model.Payment;
+import com.example.finalproject.model.enums.BookingStatus;
 import com.example.finalproject.model.enums.PaymentStatus;
 import com.example.finalproject.repository.BookingRepo;
 import com.example.finalproject.repository.PaymentRepo;
@@ -49,6 +50,10 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(PaymentStatus.SUCCESS);
 
         Payment savedPayment = paymentRepository.save(payment);
+        booking.setStatus(BookingStatus.PAID);
+        booking.setPaymentCompleted(true);
+        bookingRepository.save(booking);
+
 
         PaymentResponse response = new PaymentResponse();
         response.setPaymentId(savedPayment.getId());

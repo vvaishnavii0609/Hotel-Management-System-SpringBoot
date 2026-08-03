@@ -33,7 +33,7 @@ public class HotelServiceImpl implements HotelService {
 		
 		
 		// TODO Auto-generated method stub
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can add hotels"
@@ -44,6 +44,8 @@ public class HotelServiceImpl implements HotelService {
         hotel.setCity(request.getCity());
         hotel.setDescription(request.getDescription());
         hotel.setRating(request.getRating());
+        hotel.setAddress(request.getAddress());
+
 
 //        hotel.setAvailableRooms(request.getTotalrooms());
         
@@ -76,7 +78,7 @@ public class HotelServiceImpl implements HotelService {
 	@Override
 	public HotelResponse updateHotel(int id, HotelRequest request, String role) {
 		
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can update hotels"
@@ -90,6 +92,8 @@ public class HotelServiceImpl implements HotelService {
 	    hotel.setCity(request.getCity());
 	    hotel.setDescription(request.getDescription());
 	    hotel.setRating(request.getRating());
+	    hotel.setAddress(request.getAddress());
+
 
 	    Hotel updatedhotel= repo.save(hotel);
 		return mapToResponse(updatedhotel);
@@ -98,7 +102,7 @@ public class HotelServiceImpl implements HotelService {
 	@Override
 	public void deleteHotel(int id, String role) {
 		
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can delete hotels"
@@ -155,36 +159,36 @@ public class HotelServiceImpl implements HotelService {
 						request.getCity(),
 						request.getMinRating());
 
-		if(request.getSortBy()!=null) {
+//		if(request.getSortBy()!=null) {
+//
+//			switch(request.getSortBy().toLowerCase()) {
+//
+//				case "rating":
+//
+//					hotels.sort(
+//							Comparator.comparing(
+//									Hotel::getRating));
+//
+//					break;
+//
+//				case "name":
+//
+//					hotels.sort(
+//							Comparator.comparing(
+//									Hotel::getName));
+//
+//					break;
+//			}
+//
+//		}
 
-			switch(request.getSortBy().toLowerCase()) {
-
-				case "rating":
-
-					hotels.sort(
-							Comparator.comparing(
-									Hotel::getRating));
-
-					break;
-
-				case "name":
-
-					hotels.sort(
-							Comparator.comparing(
-									Hotel::getName));
-
-					break;
-			}
-
-		}
-
-		if(request.getSortDirection()!=null &&
-				request.getSortDirection()
-						.equalsIgnoreCase("desc")) {
-
-			Collections.reverse(hotels);
-
-		}
+//		if(request.getSortDirection()!=null &&
+//				request.getSortDirection()
+//						.equalsIgnoreCase("desc")) {
+//
+//			Collections.reverse(hotels);
+//
+//		}
 
 		return hotels.stream()
 
@@ -205,6 +209,9 @@ public class HotelServiceImpl implements HotelService {
 		response.setDescription(hotel.getDescription());
 
 		response.setRating(hotel.getRating());
+		
+		response.setAddress(hotel.getAddress());
+
 
 //		response.setAvailableRooms(hotel.getAvailableRooms());
 

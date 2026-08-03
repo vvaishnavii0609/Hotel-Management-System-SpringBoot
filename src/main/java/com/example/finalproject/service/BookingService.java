@@ -13,4 +13,14 @@ public interface BookingService {
     BookingResponse getBookingById(int bookingId, Integer id);
 
     BookingResponse cancelBooking(int bookingId, Integer id);
+    
+    List<BookingResponse> getPendingBookings();
+
+    BookingResponse approveBooking(int bookingId);
+
+    BookingResponse rejectBooking(int bookingId);
+    
+    List<BookingResponse> getAllBookings();
+
+
 }

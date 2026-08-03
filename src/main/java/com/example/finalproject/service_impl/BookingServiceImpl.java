@@ -15,6 +15,7 @@ import com.example.finalproject.repository.BookingRepo;
 import com.example.finalproject.repository.HotelRepo;
 import com.example.finalproject.repository.RoomRepo;
 import com.example.finalproject.service.BookingService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,176 +25,601 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class BookingServiceImpl implements BookingService {
+
 
     @Autowired
     private BookingRepo bookingRepo;
 
+
     @Autowired
-   private RoomRepo roomRepo;
+    private RoomRepo roomRepo;
+
 
     @Autowired
     private HotelRepo hotelRepo;
 
 
+
     @Override
-    public BookingResponse createBooking(BookingRequest request, Integer id) {
-        Room room = roomRepo.findById(request.getRoomId()) .orElseThrow(() -> new RuntimeException("Room not found"));
+    public BookingResponse createBooking(
+            BookingRequest request,
+            Integer id) {
+
+
+        Room room = roomRepo.findById(request.getRoomId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Room not found"));
+
+
+
         if(room.getStatus()== RoomStatus.MAINTENANCE)
         {
-        	throw new RoomUnavailableException("Room is under maintenance");
+            throw new RoomUnavailableException(
+                    "Room is under maintenance");
         }
-        if(!request.getCheckInDate().isBefore(request.getCheckOutDate()))
-        {
-        	throw new InvalidBookingException("Check-in date must be before check-out date");
-        }
-        if(request.getCheckInDate().isBefore(LocalDate.now()))
-        {
-        	throw new InvalidBookingException("Check-in date cannot be in the past");
-        }
-        if(request.getNumberOfGuests()>room.getCapacity())
-        {
-        	throw new InvalidBookingException("Number of guests exceeds room capacity");
-        }
-        long count = bookingRepo.countOverlappingBookings(
-                room.getId(),
-                request.getCheckInDate(),
-                request.getCheckOutDate());
 
-        if(count>0)
-        {
-        	throw new RoomUnavailableException("Room is already booked for the selected dates");
-        }
-        long numberOfNights = ChronoUnit.DAYS.between(request.getCheckInDate(), request.getCheckOutDate());
 
-        double totalAmount = numberOfNights * room.getPrice();
+
+        if(!request.getCheckInDate()
+                .isBefore(request.getCheckOutDate()))
+        {
+            throw new InvalidBookingException(
+                    "Check-in date must be before check-out date");
+        }
+
+
+
+        if(request.getCheckInDate()
+                .isBefore(LocalDate.now()))
+        {
+            throw new InvalidBookingException(
+                    "Check-in date cannot be in the past");
+        }
+
+
+
+        if(request.getNumberOfGuests()
+                > room.getCapacity())
+        {
+            throw new InvalidBookingException(
+                    "Number of guests exceeds room capacity");
+        }
+
+
+
+        long count =
+                bookingRepo.countOverlappingBookings(
+                        room.getId(),
+                        request.getCheckInDate(),
+                        request.getCheckOutDate()
+                );
+
+
+        if(count > 0)
+        {
+            throw new RoomUnavailableException(
+                    "Room is already booked for selected dates");
+        }
+
+
+
+        long nights =
+                ChronoUnit.DAYS.between(
+                        request.getCheckInDate(),
+                        request.getCheckOutDate()
+                );
+
+
+        double totalAmount =
+                nights * room.getPrice();
+
+
 
         Booking booking = new Booking();
+
         booking.setUserId(id);
+
         booking.setHotelId(room.getHotelId());
+
         booking.setRoomId(room.getId());
-        booking.setNumberOfGuests(request.getNumberOfGuests());
-        booking.setBookingDate(LocalDateTime.now());
-        booking.setCheckinDate(request.getCheckInDate());
-        booking.setCheckOutDate(request.getCheckOutDate());
+
+        booking.setNumberOfGuests(
+                request.getNumberOfGuests());
+
+        booking.setBookingDate(
+                LocalDateTime.now());
+
+        booking.setCheckinDate(
+                request.getCheckInDate());
+
+        booking.setCheckOutDate(
+                request.getCheckOutDate());
+
         booking.setTotalAmount(totalAmount);
-        booking.setStatus(BookingStatus.CONFIRMED);
 
 
-        Booking savedBooking = bookingRepo.save(booking);
-        Hotel hotel = hotelRepo.findById(room.getHotelId())
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Hotel not found"));
+        // IMPORTANT
+        booking.setStatus(
+                BookingStatus.PAYMENT_PENDING);
 
-        return mapToResponse(savedBooking,room,hotel);
+
+        booking.setPaymentCompleted(false);
+
+
+
+        Booking saved =
+                bookingRepo.save(booking);
+
+
+
+        Hotel hotel =
+                hotelRepo.findById(room.getHotelId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Hotel not found"));
+
+
+
+        return mapToResponse(
+                saved,
+                room,
+                hotel
+        );
     }
+
+
+
+
 
     @Override
     public List<BookingResponse> getMyBookings(Integer id) {
-        List<Booking> bookings = bookingRepo.findByUserId(id);
-
-        List<BookingResponse> responses = new ArrayList<>();
-
-        for (Booking booking : bookings) {
-
-            System.out.println("---------------------");
-            System.out.println("Booking ID : " + booking.getId());
-            System.out.println("User ID    : " + booking.getUserId());
-            System.out.println("Room ID    : " + booking.getRoomId());
 
 
-            Room room = roomRepo.findById(booking.getRoomId())
-            		.orElseThrow(() ->
-                    new ResourceNotFoundException("Room not found"));
+        List<Booking> bookings =
+                bookingRepo.findByUserId(id);
 
-            Hotel hotel = hotelRepo.findById(booking.getHotelId())
-            		.orElseThrow(() ->
-                    new ResourceNotFoundException("Hotel not found"));
 
-            responses.add(mapToResponse(booking, room, hotel));
+
+        List<BookingResponse> responses =
+                new ArrayList<>();
+
+
+
+        for(Booking booking : bookings)
+        {
+
+            Room room =
+                    roomRepo.findById(
+                            booking.getRoomId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Room not found"));
+
+
+
+            Hotel hotel =
+                    hotelRepo.findById(
+                            booking.getHotelId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Hotel not found"));
+
+
+
+            responses.add(
+                    mapToResponse(
+                            booking,
+                            room,
+                            hotel));
         }
+
 
         return responses;
     }
 
-    @Override
-    public BookingResponse getBookingById(int bookingId, Integer id) {
-        Booking booking = bookingRepo.findById(bookingId)
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Booking not found"));
 
-        if (booking.getUserId()!= id) {
-        	throw new AuthenticationException("You are not authorized to view this booking");
-        }
 
-        Room room = roomRepo.findById(booking.getRoomId())
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Room not found"));
 
-        Hotel hotel = hotelRepo.findById(booking.getHotelId())
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Hotel not found"));
 
-        return mapToResponse(booking, room, hotel);
-    }
 
     @Override
-    public BookingResponse cancelBooking(int bookingId, Integer id) {
-        Booking booking = bookingRepo.findById(bookingId)
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Booking not found"));
+    public BookingResponse getBookingById(
+            int bookingId,
+            Integer id) {
 
-        if (booking.getUserId()!=id) {
-        	throw new AuthenticationException("You are not authorized to view this booking");
+
+
+        Booking booking =
+                bookingRepo.findById(bookingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Booking not found"));
+
+
+
+        if(booking.getUserId()!=id)
+        {
+            throw new AuthenticationException(
+                    "Not authorized");
         }
 
-        if (booking.getStatus() == BookingStatus.CANCELLED) {
-        	throw new InvalidBookingException("Booking is already cancelled");
-        }
 
-        booking.setStatus(BookingStatus.CANCELLED);
 
-        Booking updatedBooking = bookingRepo.save(booking);
+        Room room =
+                roomRepo.findById(
+                        booking.getRoomId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Room not found"));
 
-        Room room = roomRepo.findById(updatedBooking.getRoomId())
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Room not found"));
 
-        Hotel hotel = hotelRepo.findById(updatedBooking.getHotelId())
-        		.orElseThrow(() ->
-                new ResourceNotFoundException("Hotel not found"));
 
-        return mapToResponse(updatedBooking, room, hotel);
+        Hotel hotel =
+                hotelRepo.findById(
+                        booking.getHotelId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Hotel not found"));
+
+
+
+        return mapToResponse(
+                booking,
+                room,
+                hotel);
     }
+
+
+
+
+
+
+    @Override
+    public BookingResponse cancelBooking(
+            int bookingId,
+            Integer id) {
+
+
+
+        Booking booking =
+                bookingRepo.findById(bookingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Booking not found"));
+
+
+
+        if(booking.getUserId()!=id)
+        {
+            throw new AuthenticationException(
+                    "Not authorized");
+        }
+
+
+
+        if(booking.getStatus()
+                == BookingStatus.CONFIRMED)
+        {
+            throw new InvalidBookingException(
+                    "Confirmed booking cannot be cancelled");
+        }
+
+
+
+        booking.setStatus(
+                BookingStatus.CANCELLED);
+
+
+
+        Booking updated =
+                bookingRepo.save(booking);
+
+
+
+        Room room =
+                roomRepo.findById(
+                        updated.getRoomId())
+                .orElseThrow();
+
+
+
+        Hotel hotel =
+                hotelRepo.findById(
+                        updated.getHotelId())
+                .orElseThrow();
+
+
+
+        return mapToResponse(
+                updated,
+                room,
+                hotel);
+    }
+
+
+
+
+
+
+
+    // ADMIN
+    @Override
+    public List<BookingResponse> getPendingBookings() {
+
+
+        List<Booking> bookings =
+                bookingRepo.findByStatus(
+                        BookingStatus.PAID);
+
+
+
+        List<BookingResponse> responses =
+                new ArrayList<>();
+
+
+
+        for(Booking booking : bookings)
+        {
+
+            Room room =
+                    roomRepo.findById(
+                            booking.getRoomId())
+                    .orElseThrow();
+
+
+
+            Hotel hotel =
+                    hotelRepo.findById(
+                            booking.getHotelId())
+                    .orElseThrow();
+
+
+
+            responses.add(
+                    mapToResponse(
+                            booking,
+                            room,
+                            hotel));
+        }
+
+
+
+        return responses;
+    }
+
+
+
+
+
+
+
+    @Override
+    public BookingResponse approveBooking(
+            int bookingId) {
+
+
+
+        Booking booking =
+                bookingRepo.findById(bookingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Booking not found"));
+
+
+
+        if(booking.getStatus()
+                != BookingStatus.PAID)
+        {
+            throw new InvalidBookingException(
+                    "Payment not completed");
+        }
+
+
+
+        booking.setStatus(
+                BookingStatus.CONFIRMED);
+
+
+
+        Booking updated =
+                bookingRepo.save(booking);
+
+
+
+        Room room =
+                roomRepo.findById(
+                        updated.getRoomId())
+                .orElseThrow();
+
+
+
+        Hotel hotel =
+                hotelRepo.findById(
+                        updated.getHotelId())
+                .orElseThrow();
+
+
+
+        return mapToResponse(
+                updated,
+                room,
+                hotel);
+    }
+
+
+
+
+
+
+
+    @Override
+    public BookingResponse rejectBooking(
+            int bookingId) {
+
+
+        Booking booking =
+                bookingRepo.findById(bookingId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Booking not found"));
+
+
+
+        booking.setStatus(
+                BookingStatus.REJECTED);
+
+
+
+        Booking updated =
+                bookingRepo.save(booking);
+
+
+
+        Room room =
+                roomRepo.findById(
+                        updated.getRoomId())
+                .orElseThrow();
+
+
+
+        Hotel hotel =
+                hotelRepo.findById(
+                        updated.getHotelId())
+                .orElseThrow();
+
+
+
+        return mapToResponse(
+                updated,
+                room,
+                hotel);
+    }
+
+
+
+
+
+
+    @Override
+    public List<BookingResponse> getAllBookings() {
+
+
+        List<Booking> bookings =
+                bookingRepo.findAll();
+
+
+
+        List<BookingResponse> responses =
+                new ArrayList<>();
+
+
+
+        for(Booking booking : bookings)
+        {
+
+            Room room =
+                    roomRepo.findById(
+                            booking.getRoomId())
+                    .orElseThrow();
+
+
+
+            Hotel hotel =
+                    hotelRepo.findById(
+                            booking.getHotelId())
+                    .orElseThrow();
+
+
+
+            responses.add(
+                    mapToResponse(
+                            booking,
+                            room,
+                            hotel));
+        }
+
+
+        return responses;
+    }
+
+
+
+
+
+
 
     private BookingResponse mapToResponse(
             Booking booking,
             Room room,
             Hotel hotel) {
 
-        BookingResponse response = new BookingResponse();
 
-        response.setBookingId(booking.getId());
+        BookingResponse response =
+                new BookingResponse();
 
-        response.setHotelId(hotel.getId());
-        response.setHotelName(hotel.getName());
 
-        response.setRoomId(room.getId());
-        response.setRoomNumber(room.getRoomno());
-        response.setRoomType(room.getRoomtype());
 
-        response.setCheckInDate(booking.getCheckinDate());
-        response.setCheckOutDate(booking.getCheckOutDate());
+        response.setBookingId(
+                booking.getId());
 
-        response.setNumberOfGuests(booking.getNumberOfGuests());
 
-        response.setTotalAmount(booking.getTotalAmount());
+        response.setUserId(
+                booking.getUserId());
 
-        response.setStatus(booking.getStatus());
 
-        response.setBookingDate(booking.getBookingDate());
+        response.setHotelId(
+                hotel.getId());
+
+
+        response.setHotelName(
+                hotel.getName());
+
+
+        response.setRoomId(
+                room.getId());
+
+
+        response.setRoomNumber(
+                room.getRoomno());
+
+
+        response.setRoomType(
+                room.getRoomtype());
+
+
+        response.setCheckInDate(
+                booking.getCheckinDate());
+
+
+        response.setCheckOutDate(
+                booking.getCheckOutDate());
+
+
+        response.setNumberOfGuests(
+                booking.getNumberOfGuests());
+
+
+        response.setTotalAmount(
+                booking.getTotalAmount());
+
+
+        response.setStatus(
+                booking.getStatus());
+
+
+        response.setBookingDate(
+                booking.getBookingDate());
+
+
+        response.setPaymentCompleted(
+                booking.isPaymentCompleted());
+
+
 
         return response;
     }
+
 }

@@ -22,6 +22,9 @@ public class Booking {
 	private int userId;
 
 	private int roomId;
+	
+	private boolean paymentCompleted;
+
 
 
 	private int hotelId;
@@ -54,6 +57,15 @@ public class Booking {
 	public void setNumberOfGuests(int numberOfGuests) {
 		this.numberOfGuests = numberOfGuests;
 	}
+	
+	public boolean isPaymentCompleted() {
+	    return paymentCompleted;
+	}
+
+	public void setPaymentCompleted(boolean paymentCompleted) {
+	    this.paymentCompleted = paymentCompleted;
+	}
+
 
 	public int getId() {
 		return id;

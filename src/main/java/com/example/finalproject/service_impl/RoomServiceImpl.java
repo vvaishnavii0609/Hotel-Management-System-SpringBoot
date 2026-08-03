@@ -33,7 +33,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomResponse addRoom(RoomRequest request,String role) {
     	
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can add rooms"
@@ -69,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomResponse updateRoom(int id, RoomRequest request, String role) {
     	
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can update room"
@@ -96,7 +96,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void deleteRoom(int id, String role) {
     	
-	    if(!role.equals("ADMIN")) {
+	    if(!"ADMIN".equals(role)) {
 
 	        throw new AuthenticationException(
 	                "Only admin can delete room"

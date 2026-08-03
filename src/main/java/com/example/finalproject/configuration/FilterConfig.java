@@ -17,8 +17,6 @@ public class FilterConfig {
 		FilterRegistrationBean<JwtFilters> bean = new FilterRegistrationBean<>();
 		
 		bean.setFilter( new JwtFilters());
-		bean.addUrlPatterns("/hotel/*");
-		bean.addUrlPatterns("/room/*");
 		bean.addUrlPatterns("/booking/*");
 		bean.addUrlPatterns("/payment/*");
 		bean.addUrlPatterns("/dashboard/*");

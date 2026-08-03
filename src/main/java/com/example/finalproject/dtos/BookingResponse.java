@@ -30,8 +30,29 @@ public class BookingResponse {
     private BookingStatus status;
 
     private LocalDateTime bookingDate;
+    
+    private int userId;
 
-    public BookingResponse(int bookingId, int hotelId, String hotelName, int roomId, String roomNumber, RoomType roomType, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, double totalAmount, BookingStatus status, LocalDateTime bookingDate) {
+    private boolean paymentCompleted;
+
+
+    public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public boolean isPaymentCompleted() {
+		return paymentCompleted;
+	}
+
+	public void setPaymentCompleted(boolean paymentCompleted) {
+		this.paymentCompleted = paymentCompleted;
+	}
+
+	public BookingResponse(int bookingId, int hotelId, String hotelName, int roomId, String roomNumber, RoomType roomType, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, double totalAmount, BookingStatus status, LocalDateTime bookingDate) {
         this.bookingId = bookingId;
         this.hotelId = hotelId;
         this.hotelName = hotelName;

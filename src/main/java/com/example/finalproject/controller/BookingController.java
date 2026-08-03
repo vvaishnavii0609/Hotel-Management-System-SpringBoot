@@ -58,8 +58,42 @@ public class BookingController {
 
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/admin/pending")
+    public ResponseEntity<List<BookingResponse>> getPendingBookings(){
+
+        return ResponseEntity.ok(
+            bookingService.getPendingBookings()
+        );
+    }
 
 
+    @PatchMapping("/admin/{bookingId}/approve")
+    public ResponseEntity<BookingResponse> approveBooking(
+            @PathVariable int bookingId){
+
+        return ResponseEntity.ok(
+            bookingService.approveBooking(bookingId)
+        );
+    }
+
+
+    @PatchMapping("/admin/{bookingId}/reject")
+    public ResponseEntity<BookingResponse> rejectBooking(
+            @PathVariable int bookingId){
+
+        return ResponseEntity.ok(
+            bookingService.rejectBooking(bookingId)
+        );
+    }
+
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<BookingResponse>> getAllBookings(){
+
+        return ResponseEntity.ok(
+            bookingService.getAllBookings()
+        );
+    }
 
 
 }
