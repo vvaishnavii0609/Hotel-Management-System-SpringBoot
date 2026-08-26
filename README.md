@@ -78,33 +78,6 @@ Booking Confirmation
 Booking History
 ```
 
-## 🏗️ System Architecture
-
-```text
-                    Customer / Admin
-                           │
-                           ▼
-                 HTML / CSS / JavaScript
-                           │
-                       REST APIs
-                           │
-                           ▼
-                  Spring Boot Backend
-                           │
-              ┌────────────┴────────────┐
-              │                         │
-       Spring Security              Services
-              │                         │
-             JWT                        │
-                                        ▼
-                               Spring Data JPA
-                                        │
-                                        ▼
-                                   Hibernate
-                                        │
-                                        ▼
-                                     MySQL
-```
 
 ## 🛠️ Tech Stack
 
@@ -138,42 +111,6 @@ Booking History
 | **Admin Booking** | View Pending, Approve, Reject |
 | **Payment** | Payment Processing |
 
-## 📁 Project Structure
-
-### Backend
-
-```text
-Hotel-Management-System-SpringBoot/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   └── resources/
-│   └── test/
-├── .mvn/
-├── pom.xml
-├── mvnw
-├── mvnw.cmd
-└── README.md
-```
-
-### Frontend
-
-```text
-complete-frontend-hotelmanagement/
-├── admin/
-├── css/
-├── js/
-├── home.html
-├── hotels.html
-├── rooms.html
-├── index.html
-├── register.html
-├── booking-summary.html
-├── payment.html
-├── payment-success.html
-├── booking-history.html
-└── booking-details.html
-```
 
 ## ⚙️ Getting Started
 
